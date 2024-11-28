@@ -44,11 +44,6 @@ if [[ -z "$USER_POOL_ID" ]]; then
         --email-verification-subject "Verify your email for bird_app" \
         --query "Id" \
         --output text)
-
-    if [[ -z "$USER_POOL_ID" ]]; then
-        echo "Error: Failed to create User Pool."
-        exit 1
-    fi
 else
     echo "User Pool already exists with ID: $USER_POOL_ID"
 fi
@@ -67,7 +62,6 @@ else
         --domain "$user_input" \
         --user-pool-id "$USER_POOL_ID" || {
         echo "Error: Failed to create User Pool Domain.";
-        exit 1;
     }
 fi
 
@@ -91,7 +85,6 @@ if [[ -z "$EXISTING_CLIENT" ]]; then
         --allowed-o-auth-scopes "email" "openid" \
         --allowed-o-auth-flows-user-pool-client || {
         echo "Error: Failed to create User Pool Client.";
-        exit 1;
     }
 else
     echo "User Pool Client already exists with ID: $EXISTING_CLIENT"
