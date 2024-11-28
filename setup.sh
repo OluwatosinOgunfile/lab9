@@ -91,10 +91,10 @@ else
 fi
 
 # Output results
-echo "\nScript completed successfully!\n"
+echo -e "\nScript completed successfully!\n"
 echo "CloudFront Domain: $CLOUDFRONT_DOMAIN"
 echo "User Pool ID: $USER_POOL_ID"
-echo "Cognito Domain ID: $user_input"
+echo "Cognito Domain Prefix: $user_input"
 EOF
 
 # Make the script executable
