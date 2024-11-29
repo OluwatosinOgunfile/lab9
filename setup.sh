@@ -48,8 +48,8 @@ else
     echo "User Pool already exists with ID: $USER_POOL_ID"
 fi
 
-# Wait for 10 seconds 
-sleep 10
+# Wait for 120 seconds 
+sleep 120
 
 # Check if the User Pool Domain already exists
 EXISTING_DOMAIN=$(aws cognito-idp describe-user-pool-domain \
