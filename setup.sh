@@ -133,9 +133,9 @@ while [ "$EXISTING_CLIENT" == "None" ]; do
     --user-pool-id "$USER_POOL_ID" \
     --query "UserPoolClients[?ClientName=='bird_app_client'].ClientId" \
     --output text)
-  # Check if it is still "None"
-  if [ "$EXISTING_CLIENT" == "None" ]; then
-    echo "EXISTING_CLIENT is still 'None'. Waiting for 10 seconds..."
+  # Check if no value
+  if [[ -z "$EXISTING_CLIENT" ]]; then
+    echo "EXISTING_CLIENT is not set. Waiting for 10 seconds..."
     sleep 10
   else
     echo "App Client ID is now created: $EXISTING_CLIENT"
