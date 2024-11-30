@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd /home/ec2-user/environment
-
 # Prompt the user for the User Pool Domain Prefix
 read -p "Please enter the User Pool Domain Prefix (e.g., labbirdapp-####): " user_input
 
