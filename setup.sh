@@ -11,6 +11,7 @@ read -p "Please enter the User Pool Domain Prefix (e.g., labbirdapp-####): " use
 if [[ -z "$user_input" ]]; then
     echo "Error: You must enter a value. Last attempt!"
     read -p "Please enter the User Pool Domain Prefix (e.g., labbirdapp-####): " user_input
+    break
 else
     echo "Rerun the script and enter a value."
     exit 1
