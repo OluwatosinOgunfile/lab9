@@ -82,7 +82,24 @@ else
     echo "Creating User Pool Domain..."
     aws cognito-idp create-user-pool-domain \
         --domain "$user_input" \
-        --user-pool-id "$USER_POOL_ID" || {
+        --user-pool-id "$USER_POOL_ID" ;
+# Loop until EXISTING_DOMAIN is no longer "None"
+while [ "$EXISTING_DOMAIN" == "None" ]; do
+   # Fetch the App Client ID
+  EXISTING_DOMAIN=$(aws cognito-idp describe-user-pool-domain \
+    --domain "$user_input" \
+    --query "DomainDescription.Domain" \
+    --output text 2>/dev/null)
+  # Check if it is still "None"
+  if [ "$EXISTING_DOMAIN" == "None" ]; then
+    echo "EXISTING_DOMAIN is still 'None'. Waiting for 10 seconds..."
+    sleep 10
+  else
+    echo "User Pool Domain Prefix is now created: $EXISTING_DOMAIN"
+    break
+  fi
+done
+|| {
         echo "Error: Failed to create User Pool Domain.";            exit 1
     }
 fi
@@ -106,8 +123,8 @@ if [[ -z "$EXISTING_CLIENT" ]]; then
         --allowed-o-auth-flows "code" "implicit" \
         --allowed-o-auth-scopes "email" "openid" \
         --allowed-o-auth-flows-user-pool-client;
-# Loop until USER_POOL_ID is no longer "None"
-while [ "$USER_POOL_ID" == "None" ]; do
+# Loop until EXISTING_CLIENT is no longer "None"
+while [ "$EXISTING_CLIENT" == "None" ]; do
    # Fetch the App Client ID
   EXISTING_CLIENT=$(aws cognito-idp list-user-pool-clients \
     --user-pool-id "$USER_POOL_ID" \
