@@ -9,8 +9,10 @@ read -p "Please enter the User Pool Domain Prefix (e.g., labbirdapp-####): " use
 
 # Validate user input
 if [[ -z "$user_input" ]]; then
-    echo "Error: You must enter a value."
+    echo "Error: You must enter a value. Last attempt!"
     read -p "Please enter the User Pool Domain Prefix (e.g., labbirdapp-####): " user_input
+else
+    echo "Rerun the script and enter a value."
     exit 1
 fi
 
@@ -44,12 +46,13 @@ if [[ -z "$USER_POOL_ID" ]]; then
         --email-verification-subject "Verify your email for bird_app" \
         --query "Id" \
         --output text)
+echo "Created User Pool!"
 else
     echo "User Pool already exists with ID: $USER_POOL_ID"
 fi
 
-# Wait for 120 seconds 
-sleep 120
+# Wait for 30 seconds 
+sleep 30
 
 # Check if the User Pool Domain already exists
 EXISTING_DOMAIN=$(aws cognito-idp describe-user-pool-domain \
@@ -64,7 +67,7 @@ else
     aws cognito-idp create-user-pool-domain \
         --domain "$user_input" \
         --user-pool-id "$USER_POOL_ID" || {
-        echo "Error: Failed to create User Pool Domain.";
+        echo "Error: Failed to create User Pool Domain.";            exit 1
     }
 fi
 
@@ -87,7 +90,7 @@ if [[ -z "$EXISTING_CLIENT" ]]; then
         --allowed-o-auth-flows "code" "implicit" \
         --allowed-o-auth-scopes "email" "openid" \
         --allowed-o-auth-flows-user-pool-client || {
-        echo "Error: Failed to create User Pool Client.";
+        echo "Error: Failed to create User Pool Client."; exit 1
     }
 else
     echo "User Pool Client already exists with ID: $EXISTING_CLIENT"
@@ -97,7 +100,8 @@ fi
 echo -e "\nScript completed successfully!\n"
 echo "CloudFront Domain: $CLOUDFRONT_DOMAIN"
 echo "User Pool ID: $USER_POOL_ID"
-echo "Cognito Domain Prefix: $user_input"
+echo "Cognito Domain Prefix: $EXISTING_DOMAIN"
+echo "App Client ID: $EXISTING_CLIENT"
 EOF
 
 # Make the script executable
