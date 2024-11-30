@@ -30,3 +30,7 @@ cd lab9
 # This is a sample of what to expect when you run the code
 
 ![image](https://github.com/user-attachments/assets/0fc1c60b-f285-475f-a18f-a55632e1ded6)
+
+To confirm that all resources have been created, run `. ./setup` again. Enter the same  User Pool Domain Prefix at the prompt. A result similar to the image below should be expected.
+![image](https://github.com/user-attachments/assets/c06de388-b30a-45f3-b51a-142b9dce7f29)
+
