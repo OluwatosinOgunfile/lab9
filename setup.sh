@@ -82,7 +82,10 @@ else
     echo "Creating User Pool Domain..."
     aws cognito-idp create-user-pool-domain \
         --domain "$user_input" \
-        --user-pool-id "$USER_POOL_ID" &&
+        --user-pool-id "$USER_POOL_ID" || {
+        echo "Error: Failed to create User Pool Domain.";            exit 1
+    }
+
 # Loop until EXISTING_DOMAIN is no longer "None"
 while [ "$EXISTING_DOMAIN" == "None" ]; do
    # Fetch the App Client ID
@@ -99,9 +102,6 @@ while [ "$EXISTING_DOMAIN" == "None" ]; do
     break
   fi
 done
-|| {
-        echo "Error: Failed to create User Pool Domain.";            exit 1
-    }
 fi
 
 # Check if the User Pool Client already exists
@@ -122,7 +122,10 @@ if [[ -z "$EXISTING_CLIENT" ]]; then
         --logout-urls "https://$CLOUDFRONT_DOMAIN/logout.html" \
         --allowed-o-auth-flows "code" "implicit" \
         --allowed-o-auth-scopes "email" "openid" \
-        --allowed-o-auth-flows-user-pool-client &&
+        --allowed-o-auth-flows-user-pool-client || {
+        echo "Error: Failed to create User Pool Client."; exit 1
+    }
+
 # Loop until EXISTING_CLIENT is no longer "None"
 while [ "$EXISTING_CLIENT" == "None" ]; do
    # Fetch the App Client ID
@@ -138,9 +141,7 @@ while [ "$EXISTING_CLIENT" == "None" ]; do
     echo "App Client ID is now created: $EXISTING_CLIENT"
     break
   fi
-done || {
-        echo "Error: Failed to create User Pool Client."; exit 1
-    }
+done 
 else
     echo "User Pool Client already exists with ID: $EXISTING_CLIENT"
 fi
