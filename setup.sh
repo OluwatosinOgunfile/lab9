@@ -50,7 +50,8 @@ echo "Waiting for USER_POOL_ID to be created..."
 
 # Loop until USER_POOL_ID is no longer "None"
 while [ "$USER_POOL_ID" == "None" ]; do
-
+   # Fetch the User Pool ID (replace with the actual command to retrieve it)
+  USER_POOL_ID=$(aws cognito-idp list-user-pools --max-results 1 --query "UserPools[?Name=='bird_app'].Id" --output text)
   # Check if it is still "None"
   if [ "$USER_POOL_ID" == "None" ]; then
     echo "USER_POOL_ID is still 'None'. Waiting for 10 seconds..."
