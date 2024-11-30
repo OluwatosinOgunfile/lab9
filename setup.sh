@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Create the script file and write contents to user-pool.sh
-cat << 'EOF' > user-pool.sh
-#!/bin/bash
-
 # Prompt the user for the User Pool Domain Prefix
 read -p "Please enter the User Pool Domain Prefix (e.g., labbirdapp-####): " user_input
 
@@ -155,12 +151,3 @@ echo "CloudFront Domain: $CLOUDFRONT_DOMAIN"
 echo "User Pool ID: $USER_POOL_ID"
 echo "Cognito Domain Prefix: $EXISTING_DOMAIN"
 echo "App Client ID: $EXISTING_CLIENT"
-EOF
-
-# Make the script executable
-chmod +x user-pool.sh
-
-# Notify the user
-echo "The script has been written to user-pool.sh and is ready to run."
-
-./user-pool.sh
