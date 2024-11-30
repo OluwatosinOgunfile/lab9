@@ -82,7 +82,7 @@ else
     echo "Creating User Pool Domain..."
     aws cognito-idp create-user-pool-domain \
         --domain "$user_input" \
-        --user-pool-id "$USER_POOL_ID" ;
+        --user-pool-id "$USER_POOL_ID" &&
 # Loop until EXISTING_DOMAIN is no longer "None"
 while [ "$EXISTING_DOMAIN" == "None" ]; do
    # Fetch the App Client ID
@@ -122,7 +122,7 @@ if [[ -z "$EXISTING_CLIENT" ]]; then
         --logout-urls "https://$CLOUDFRONT_DOMAIN/logout.html" \
         --allowed-o-auth-flows "code" "implicit" \
         --allowed-o-auth-scopes "email" "openid" \
-        --allowed-o-auth-flows-user-pool-client;
+        --allowed-o-auth-flows-user-pool-client &&
 # Loop until EXISTING_CLIENT is no longer "None"
 while [ "$EXISTING_CLIENT" == "None" ]; do
    # Fetch the App Client ID
