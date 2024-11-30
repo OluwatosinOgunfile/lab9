@@ -127,7 +127,7 @@ if [[ -z "$EXISTING_CLIENT" ]]; then
     }
 
 # Loop until EXISTING_CLIENT is no longer "None"
-while [ "$EXISTING_CLIENT" == "None" ]; do
+while [[ -z "$EXISTING_CLIENT" ]]; do
    # Fetch the App Client ID
   EXISTING_CLIENT=$(aws cognito-idp list-user-pool-clients \
     --user-pool-id "$USER_POOL_ID" \
@@ -135,8 +135,8 @@ while [ "$EXISTING_CLIENT" == "None" ]; do
     --output text)
   # Check if no value
   if [[ -z "$EXISTING_CLIENT" ]]; then
-    echo "EXISTING_CLIENT is not set. Waiting for 10 seconds..."
-    sleep 10
+    echo "EXISTING_CLIENT is not set. Waiting for 3 seconds..."
+    sleep 3
   else
     echo "App Client ID is now created: $EXISTING_CLIENT"
     break
@@ -145,6 +145,9 @@ done
 else
     echo "User Pool Client already exists with ID: $EXISTING_CLIENT"
 fi
+
+# Wait for 3 seconds 
+sleep 3
 
 # Output results
 echo -e "\nScript completed successfully!\n"
