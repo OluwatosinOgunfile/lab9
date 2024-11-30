@@ -46,13 +46,27 @@ if [[ -z "$USER_POOL_ID" ]]; then
         --email-verification-subject "Verify your email for bird_app" \
         --query "Id" \
         --output text)
+echo "Waiting for USER_POOL_ID to be created..."
+
+# Loop until USER_POOL_ID is no longer "None"
+while [ "$USER_POOL_ID" == "None" ]; do
+
+  # Check if it is still "None"
+  if [ "$USER_POOL_ID" == "None" ]; then
+    echo "USER_POOL_ID is still 'None'. Waiting for 10 seconds..."
+    sleep 10
+  else
+    echo "USER_POOL_ID is now created: $USER_POOL_ID"
+    break
+  fi
+done
 echo "Created User Pool!"
 else
     echo "User Pool already exists with ID: $USER_POOL_ID"
 fi
 
 # Wait for 30 seconds 
-sleep 30
+# sleep 30
 
 # Check if the User Pool Domain already exists
 EXISTING_DOMAIN=$(aws cognito-idp describe-user-pool-domain \
