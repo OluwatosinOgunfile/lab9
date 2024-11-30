@@ -51,7 +51,7 @@ echo "Waiting for USER_POOL_ID to be created..."
 
 # Loop until USER_POOL_ID is no longer "None"
 while [ "$USER_POOL_ID" == "None" ]; do
-   # Fetch the User Pool ID (replace with the actual command to retrieve it)
+   # Fetch the User Pool ID
   USER_POOL_ID=$(aws cognito-idp list-user-pools --max-results 1 --query "UserPools[?Name=='bird_app'].Id" --output text)
   # Check if it is still "None"
   if [ "$USER_POOL_ID" == "None" ]; then
@@ -105,7 +105,23 @@ if [[ -z "$EXISTING_CLIENT" ]]; then
         --logout-urls "https://$CLOUDFRONT_DOMAIN/logout.html" \
         --allowed-o-auth-flows "code" "implicit" \
         --allowed-o-auth-scopes "email" "openid" \
-        --allowed-o-auth-flows-user-pool-client || {
+        --allowed-o-auth-flows-user-pool-client;
+# Loop until USER_POOL_ID is no longer "None"
+while [ "$USER_POOL_ID" == "None" ]; do
+   # Fetch the App Client ID
+  EXISTING_CLIENT=$(aws cognito-idp list-user-pool-clients \
+    --user-pool-id "$USER_POOL_ID" \
+    --query "UserPoolClients[?ClientName=='bird_app_client'].ClientId" \
+    --output text)
+  # Check if it is still "None"
+  if [ "$EXISTING_CLIENT" == "None" ]; then
+    echo "EXISTING_CLIENT is still 'None'. Waiting for 10 seconds..."
+    sleep 10
+  else
+    echo "App Client ID is now created: $EXISTING_CLIENT"
+    break
+  fi
+done || {
         echo "Error: Failed to create User Pool Client."; exit 1
     }
 else
